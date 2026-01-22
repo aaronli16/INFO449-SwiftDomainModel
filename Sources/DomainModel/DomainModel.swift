@@ -117,12 +117,85 @@ public class Person {
     public var firstName = ""
     public var lastName = ""
     public var age = 0
-    public var job = Job(title: "", type: .Hourly(0))
-    public init(fi
+    // Consulted Ai to help me figure out the age restriction
+    private var _job: Job? = nil // // actual storage, nobody outside can touch this
+    public var job: Job? {
+        get { return _job }
+        set {
+            if age >= 18 {
+                _job = newValue
+            }
+        }
+    }
+
+    private var _spouse: Person? = nil
+    public var spouse: Person? {
+        get { return _spouse }
+        set {
+            if age >= 18 {
+                _spouse = newValue
+            }
+        }
+    }
+    public init(firstName : String, lastName : String, age: Int) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.age = age
+    }
+    
+    public func toString() -> String {
+        var jobString = "nil"
+        if let j = job {
+            switch j.type {
+            case .Hourly(let pay):
+                jobString = "Hourly(\(pay))"
+            case .Salary(let pay):
+                jobString = "Salary(\(pay))"
+            }
+        }
+        
+        var spouseString = "nil"
+        if let s = spouse {
+            spouseString = s.firstName
+        }
+        
+        return "[Person: firstName:\(firstName) lastName:\(lastName) age:\(age) job:\(jobString) spouse:\(spouseString)]"
+    }
 }
 
 ////////////////////////////////////
 // Family
 //
 public class Family {
+    public var members: [Person] = []
+    public init(spouse1: Person, spouse2: Person){
+        spouse1.spouse = spouse2
+        spouse2.spouse = spouse1
+        members.append(spouse1)
+        members.append(spouse2)
+    }
+    
+    
+    public func haveChild(_ child: Person) -> Bool{
+        
+        if members[0].age < 21 && members[1].age < 21{
+            return false
+        }
+        
+        members.append(child)
+        return true
+    }
+    
+    public func householdIncome() -> Int{
+        var sum = 0
+        
+        for member in members{
+            if let job = member.job {
+                sum +=  job.calculateIncome(2000)
+            }
+        }
+        return sum
+     
+        
+    }
 }
