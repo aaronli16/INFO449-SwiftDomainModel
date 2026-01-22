@@ -155,6 +155,18 @@ public class Person {
         self.lastName = lastName
         self.age = age
     }
+    public init(firstName: String, age: Int) {
+        self.firstName = firstName
+        self.lastName = ""
+        self.age = age
+    }
+
+    public init(lastName: String, age: Int) {
+        self.firstName = ""
+        self.lastName = lastName
+        self.age = age
+    }
+
     
     public func toString() -> String {
         var jobString = "nil"

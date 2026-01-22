@@ -67,6 +67,21 @@ class FamilyTests : XCTestCase {
         let familyIncome = family.householdIncome()
         XCTAssert(familyIncome == 12000)
     }
+    
+    // Extra tests for the extra credit
+    func testPersonWithOnlyFirstName() {
+        let beyonce = Person(firstName: "Beyonce", age: 43)
+        XCTAssert(beyonce.firstName == "Beyonce")
+        XCTAssert(beyonce.lastName == "")
+        XCTAssert(beyonce.toString() == "[Person: firstName:Beyonce lastName: age:43 job:nil spouse:nil]")
+    }
+
+    func testPersonWithOnlyLastName() {
+        let madonna = Person(lastName: "li", age: 66)
+        XCTAssert(madonna.firstName == "")
+        XCTAssert(madonna.lastName == "li")
+    }
+
   
     static var allTests = [
         ("testFamily", testFamily),
