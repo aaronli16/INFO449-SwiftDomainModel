@@ -8,6 +8,7 @@ struct DomainModel {
 ////////////////////////////////////
 // Money
 //
+import Foundation // helps with rounding in the convert method in job class
 public struct Money {
     var amount = 0
     var currency = ""
@@ -106,6 +107,18 @@ public class Job {
             self.type = .Hourly(pay + (byPercent * pay))
         case .Salary(let pay):
             self.type = .Salary(UInt(Double(pay) + (byPercent * Double(pay))))
+        }
+    }
+    
+    public func convert() {
+        switch self.type {
+        case .Hourly(let pay):
+            let yearlySalary = pay * 2000
+            let roundedUp = Int(ceil(yearlySalary / 1000.0)) * 1000 // Ai helped with rounding
+            self.type = .Salary(UInt(roundedUp))
+        case .Salary(let pay):
+            let hourlySalary = pay / 2000
+            self.type = .Hourly(Double(hourlySalary))
         }
     }
 }
